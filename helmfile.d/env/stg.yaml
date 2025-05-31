@@ -1,0 +1,26 @@
+templates:
+  default: &default
+    missingFileHandler: Error
+    values:
+    - ../values/stg/{{ .Release.Name }}/values.yaml
+#    secrets:
+#    - ../values/stg/{{ .Release.Name }}/secrets.yaml
+
+helmDefaults:
+  kubeContext: docker-desktop
+  timeout: 1200
+  createNamespace: true
+
+repositories:
+- name: stable
+  url: https://charts.helm.sh/stable
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+
+releases:
+- name: nginx
+  <<: *default
+  installed: true
+  namespace: stg-{{ .Release.Name }}
+  chart: bitnami/nginx
+  version: 20.0.5
